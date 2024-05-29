@@ -1,3 +1,4 @@
+import csv
 import re
 import sys
 import os.path
@@ -121,6 +122,15 @@ def render_clippings(file_name):
             )
             all_books[book_index]["nums"] += 1
     all_books.sort(key=lambda x: x["nums"], reverse=True)
+    # 读取当前目录下的patch.csv，将其中的书籍信息补充覆盖
+    if os.path.exists("patch.csv"):
+        with open("patch.csv", "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                # 通过书名查找书籍
+                book_index = get_book_index(row["title"])
+                if book_index != -1:
+                    all_books[book_index][row["key"]] = row["value"]
     try:
         json_str = json.dumps(all_books, indent=2, ensure_ascii=False)
         with open("clippings.json", "w") as f:
@@ -133,15 +143,28 @@ def render_clippings(file_name):
 def render_index_html():
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(HTML_HEAD.replace("../", ""))
-        f.write(
-            INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks)))
-            .replace("UPDATE", time.strftime("%Y-%m-%d %H:%M", time.localtime()))
-            .replace("BOOKS_SUM", str(len(all_books)))
-        )
+        if not os.path.exists("date.svg"):
+            f.write(
+                INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks)))
+                .replace("UPDATE", time.strftime("%Y-%m-%d %H:%M", time.localtime()))
+                .replace("BOOKS_SUM", str(len(all_books)))
+                .replace(
+                    '\n                <embed src="date.svg" type="image/svg+xml" />',
+                    "",
+                )
+            )
+        else:
+            f.write(
+                INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks)))
+                .replace("UPDATE", time.strftime("%Y-%m-%d %H:%M", time.localtime()))
+                .replace("BOOKS_SUM", str(len(all_books)))
+            )
         for book in all_books:
             f.write(
                 ITEM_CONTENT.replace("HTML_URL", "books/" + book["url"] + ".html")
-                .replace("HTML_FILE_NAME", book["name"] + " [" + book["author"] + "]")
+                .replace(
+                    "HTML_FILE_NAME", " " + book["name"] + " [" + book["author"] + "] "
+                )
                 .replace("SENTENCE_COUNT", str(book["nums"]))
             )
         f.write(FOOTER_CONTENT)
@@ -158,7 +181,9 @@ def render_books_html():
         with open("books/" + book_url + ".html", "w", encoding="utf-8") as f:
             f.write(HTML_HEAD)
             f.write(
-                BOOK_TITLE.replace("BookName", book_name + " [" + book_author + "]")
+                BOOK_TITLE.replace(
+                    "BookName", " " + book_name + " [" + book_author + "]"
+                )
             )
             for j in range(len(all_books[i]["marks"])):
                 mark = all_books[i]["marks"][j]
