@@ -8,59 +8,59 @@ from hashlib import md5
 
 HTML_HEAD = """<!DOCTYPE html>
 <html>
-	<head>
-	<meta charset="utf-8" />
-	<title> Kindle 读书笔记 </title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="../style/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="../style/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-	<link href="../style/css/custom.css" rel="stylesheet" type="text/css" />
+    <head>
+    <meta charset="utf-8" />
+    <title> Kindle 读书笔记 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../style/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../style/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="../style/css/custom.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 """
 
 INDEX_TITLE = """
-	<div class="container">
-		<header class="header col-md-12">
-			<div class="page-header">
+    <div class="container">
+        <header class="header col-md-12">
+            <div class="page-header">
                 <embed src="date.svg" type="image/svg+xml" />
-				<h1><small><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Kindle 读书笔记 </small> <span class="badge">更新于 UPDATE </span> <span class="badge"> 共 BOOKS_SUM 本书，SENTENCE_SUM 条笔记</span></h1>
-			</div>
-		</header>
-	<div class="col-md-12">
+                <h1><small><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Kindle 读书笔记 </small> <span class="badge">更新于 UPDATE </span> <span class="badge"> 共 BOOKS_SUM 本书，SENTENCE_SUM 条笔记</span></h1>
+            </div>
+        </header>
+    <div class="col-md-12">
         <div class="list-group">
 """
 
 BOOK_TITLE = """
-	<div class="container">
-		<header class="header col-md-12">
-			<div class="page-header">
-				<h1><small><span class="glyphicon glyphicon-book" aria-hidden="true"></span>BookName</small> <span class="badge"></span></h1>
-			</div>
-		</header>
+    <div class="container">
+        <header class="header col-md-12">
+            <div class="page-header">
+                <h1><small><span class="glyphicon glyphicon-book" aria-hidden="true"></span>BookName</small> <span class="badge"></span></h1>
+            </div>
+        </header>
 
         <div class="col-md-2">
-			<ul class="nav nav-pills nav-stacked go-back">
-				<li role="presentation" class="active text-center">
-					<a href="../index.html" style="border-radius: 50%;"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a>
-				</li>
-			</ul>
-		</div>
+            <ul class="nav nav-pills nav-stacked go-back">
+                <li role="presentation" class="active text-center">
+                    <a href="../index.html" style="border-radius: 50%;"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a>
+                </li>
+            </ul>
+        </div>
 """
 
 MARK_CONTENT = """
-    	<div class="col-md-12">
-			<article>
-				<div class="panel panel-default">
-					<div class="panel-body mk88"><p>SENTENCE_TXT
+        <div class="col-md-12">
+            <article>
+                <div class="panel panel-default">
+                    <div class="panel-body mk88"><p>SENTENCE_TXT
                     </p></div>
-					<div class="panel-footer text-right">
-						<span class="label label-primary"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 标注</span>
-						<span class="label label-default"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>SENTENCE_ADDR</span>
-						<span class="label label-default"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>SENTENCE_TIME</span>
-					</div>
-				</div>
-			</article>
+                    <div class="panel-footer text-right">
+                        <span class="label label-primary"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 标注</span>
+                        <span class="label label-default"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>SENTENCE_ADDR</span>
+                        <span class="label label-default"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>SENTENCE_TIME</span>
+                    </div>
+                </div>
+            </article>
         </div>
 """
 
@@ -74,7 +74,7 @@ FOOTER_CONTENT = """
 </html>
 """
 
-DELIMITER = u"==========\n"
+DELIMITER = "==========\n"
 all_books = []
 all_marks = []
 
@@ -175,7 +175,7 @@ def render_date_json():
     for i in range(len(all_marks)):
         mark = all_marks[i].split("\n")
         if len(mark) == 4:
-            date = re.split(r"[年月日]\s*",mark[1].split("|")[1].split(" ")[2])
+            date = re.split(r"[年月日]\s*", mark[1].split("|")[1].split(" ")[2])
             month = date[1] if len(date[1]) == 2 else "0" + date[1]
             day = date[2] if len(date[2]) == 2 else "0" + date[2]
             date = date[0] + "-" + month + "-" + day
