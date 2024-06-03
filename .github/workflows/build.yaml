@@ -4,8 +4,8 @@ name: Build kindle note website
 on:
   push:
     branches:
-      - gh-pages
       - master
+      - gh-pages
 
 jobs:
   build:
