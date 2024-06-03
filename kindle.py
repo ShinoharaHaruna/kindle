@@ -56,7 +56,7 @@ MARK_CONTENT = """
                     <div class="panel-body mk88"><p>SENTENCE_TXT
                     </p></div>
                     <div class="panel-footer text-right">
-                        <span class="label label-primary"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 标注</span>
+                        <span class="label label-primary"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 标注 MARK_INDEX</span>
                         <span class="label label-default"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>SENTENCE_ADDR</span>
                         <span class="label label-default"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>SENTENCE_TIME</span>
                     </div>
@@ -189,6 +189,7 @@ def render_books_html():
                 mark = all_books[i]["marks"][j]
                 f.write(
                     MARK_CONTENT.replace("SENTENCE_TXT", mark["content"])
+                    .replace("MARK_INDEX", str(j + 1))
                     .replace("SENTENCE_ADDR", mark["address"])
                     .replace("SENTENCE_TIME", mark["time"])
                 )
