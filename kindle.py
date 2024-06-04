@@ -145,7 +145,7 @@ def render_index_html():
         f.write(HTML_HEAD.replace("../", ""))
         if not os.path.exists("date.svg"):
             f.write(
-                INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks)))
+                INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks) - 1))
                 .replace("UPDATE", time.strftime("%Y-%m-%d %H:%M", time.localtime()))
                 .replace("BOOKS_SUM", str(len(all_books)))
                 .replace(
@@ -155,7 +155,7 @@ def render_index_html():
             )
         else:
             f.write(
-                INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks)))
+                INDEX_TITLE.replace("SENTENCE_SUM", str(len(all_marks) - 1))
                 .replace("UPDATE", time.strftime("%Y-%m-%d %H:%M", time.localtime()))
                 .replace("BOOKS_SUM", str(len(all_books)))
             )
@@ -185,8 +185,11 @@ def render_books_html():
                     "BookName", " " + book_name + " [" + book_author + "]"
                 )
             )
-            for j in range(len(all_books[i]["marks"])):
-                mark = all_books[i]["marks"][j]
+            t = sorted(
+                all_books[i]["marks"], key=lambda x: int(x["address"].split("#")[1].split("-")[0])
+            )
+            for j in range(len(t)):
+                mark = t[j]
                 f.write(
                     MARK_CONTENT.replace("SENTENCE_TXT", mark["content"])
                     .replace("MARK_INDEX", str(j + 1))
@@ -224,4 +227,4 @@ if __name__ == "__main__":
     render_books_html()
     render_date_json()
     print("书籍总数：", len(all_books))
-    print("笔记总数：", len(all_marks))
+    print("笔记总数：", len(all_marks) - 1)
